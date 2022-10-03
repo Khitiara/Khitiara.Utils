@@ -1,0 +1,5 @@
+# .tmplr.yml
+steps: 
+  - remove: LICENSE
+  - remove: .idea
+  - remove: .tmplr.yml
