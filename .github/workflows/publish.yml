@@ -22,12 +22,12 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal
       - name: Pack
-        run: dotnet pack --configuration Release -o finalpackage --no-build
+        run: dotnet pack --configuration Release -o pack --no-build
       - name: Publish artifact
         uses: actions/upload-artifact@master
         with:
           name: nupkg
           path: pack
       - name: Push to NuGet
-        if: ${{ github.repository == 'Khitiara/Khitiara.Utils' && startsWith(github.ref, 'release/') }}
+        if: ${{ github.repository == 'Khitiara/Khitiara.Utils' && startsWith(github.ref, 'refs/heads/release/') }}
         run: dotnet nuget push pack\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://nuget.org

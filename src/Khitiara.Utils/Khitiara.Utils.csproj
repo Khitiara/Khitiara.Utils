@@ -2,5 +2,6 @@
     <PropertyGroup>
         <PackageId>Khitiara.Utils</PackageId>
         <Authors>Khitiara</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 </Project>
