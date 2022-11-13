@@ -1,16 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3EB39B41-48C0-4245-B9B0-D51677A4C61C}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ext", "ext", "{B5753CDE-3C8E-44B3-AB4D-DE97C5E1EEE6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{37C06D60-0C39-427D-8012-454BC138E350}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.props = test\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bench", "bench", "{39615CF3-B1EA-4C13-9D59-A7FE9AFD18A8}"
+	ProjectSection(SolutionItems) = preProject
+		bench\Directory.Build.props = bench\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Khitiara.Utils", "src\Khitiara.Utils\Khitiara.Utils.csproj", "{1B1D3D02-A081-402E-A611-7B9DF1650B68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Khitiara.Utils.Tests.Unit", "test\Khitiara.Utils.Tests.Unit\Khitiara.Utils.Tests.Unit.csproj", "{19035620-093C-4B11-9430-E1530C4CC2B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_sln-items", "_sln-items", "{702ABFE9-8BC2-4CDB-82ED-A8EAB23DE587}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		version.json = version.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
