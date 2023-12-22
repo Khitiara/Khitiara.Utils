@@ -32,7 +32,7 @@ public static class ForAllTests
 
     [Fact]
     public static async Task TestForAllAsync() {
-        Mock<Func<int, ValueTask>> mock = new();
+        Mock<Func<int, Task>> mock = new();
         mock.Setup(a => a(It.IsAny<int>()))
             .Returns<int>(async arg => await Task.Delay(TimeSpan.FromMilliseconds(arg)));
         int[] srcData = { 3, 5, 2, };
@@ -45,7 +45,7 @@ public static class ForAllTests
 
     [Fact]
     public static async Task TestForAllStateAsync() {
-        Mock<Func<int, int, ValueTask>> mock = new();
+        Mock<Func<int, int, Task>> mock = new();
         mock.Setup(a => a(It.IsAny<int>(), 5))
             .Returns<int, int>(async (arg, _) => await Task.Delay(TimeSpan.FromMilliseconds(arg)));
         int[] srcData = { 3, 5, 2, };
@@ -58,7 +58,7 @@ public static class ForAllTests
 
     [Fact]
     public static async Task TestForAllCancellationAsync() {
-        Mock<Func<int, CancellationToken, ValueTask>> mock = new();
+        Mock<Func<int, CancellationToken, Task>> mock = new();
         mock.Setup(a => a(It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .Returns<int, CancellationToken>(async (arg, cancellationToken) =>
                 await Task.Delay(TimeSpan.FromMilliseconds(arg), cancellationToken));

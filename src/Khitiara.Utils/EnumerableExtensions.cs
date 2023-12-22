@@ -13,9 +13,10 @@ public static class EnumerableExtensions
     /// <typeparam name="T">The type of input elements</typeparam>
     /// <returns>The sequence of non-null input elements</returns>
     public static IEnumerable<T> Collect<T>(this IEnumerable<T?> source) {
-        // redundant delegate creation fixes erroneous nullability warning
-        // ReSharper disable once RedundantDelegateCreation
-        return Collect(source, new TryDelegate<T?, T>(static (T? item, out T? output) => (output = item) != null));
+        foreach (T? item in source) {
+            if (item is { } i)
+                yield return i;
+        }
     }
 
     /// <summary>
@@ -78,8 +79,8 @@ public static class EnumerableExtensions
     /// <param name="func">The asynchronous action to execute on each element of the source enumerable.</param>
     /// <typeparam name="T">The type of elements of <paramref name="source"/></typeparam>
     /// <returns>A <see cref="Task"/> which will complete when all elements of the source sequence have been processed</returns>
-    public static Task ForAllAsync<T>(this ParallelQuery<T> source, Func<T, ValueTask> func) =>
-        Task.WhenAll(source.Select(i => func(i).AsTask()).ParallelToBag());
+    public static Task ForAllAsync<T>(this ParallelQuery<T> source, Func<T, Task> func) =>
+        Task.WhenAll(source.Select(func).ParallelToBag());
 
     /// <summary>
     /// Execute an asynchronous operation on each element of a <see cref="ParallelQuery{T}"/> and returns a task
@@ -91,9 +92,9 @@ public static class EnumerableExtensions
     /// <typeparam name="T">The type of elements of <paramref name="source"/></typeparam>
     /// <typeparam name="TState">A global state type which will be forwarded to <paramref name="func"/></typeparam>
     /// <returns>A <see cref="Task"/> which will complete when all elements of the source sequence have been processed</returns>
-    public static Task ForAllAsync<T, TState>(this ParallelQuery<T> source, Func<T, TState, ValueTask> func,
+    public static Task ForAllAsync<T, TState>(this ParallelQuery<T> source, Func<T, TState, Task> func,
         TState state) =>
-        Task.WhenAll(source.Select(i => func(i, state).AsTask()).ParallelToBag());
+        Task.WhenAll(source.Select(i => func(i, state)).ParallelToBag());
 
     /// <summary>
     /// Execute an asynchronous operation on each element of a <see cref="ParallelQuery{T}"/> and returns a task
@@ -107,13 +108,13 @@ public static class EnumerableExtensions
     /// <param name="cancellationToken">A cancellation token to pass to <paramref name="func"/> which will cancel operation</param>
     /// <typeparam name="T">The type of elements of <paramref name="source"/></typeparam>
     /// <returns>A <see cref="Task"/> which will complete when all elements of the source sequence have been processed</returns>
-    public static Task ForAllAsync<T>(this ParallelQuery<T> source, Func<T, CancellationToken, ValueTask> func,
+    public static Task ForAllAsync<T>(this ParallelQuery<T> source, Func<T, CancellationToken, Task> func,
         CancellationToken cancellationToken = default) {
         ConcurrentBag<Task> bag = new();
         source.WithCancellation(cancellationToken).ForAll(item => {
             cancellationToken.ThrowIfCancellationRequested();
-            bag.Add(func(item, cancellationToken).AsTask());
+            bag.Add(func(item, cancellationToken));
         });
-        return Task.WhenAll(bag);
+        return Task.WhenAll(bag.ToArray());
     }
 }
